@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: idsincer <idsincer@student.42istanbul.c    +#+  +:+       +#+        */
+/*   By: idil <idil@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/20 15:50:14 by idsincer          #+#    #+#             */
-/*   Updated: 2026/09/20 16:34:57 by idsincer         ###   ########.fr       */
+/*   Updated: 2026/10/29 16:44:53 by idil             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,10 @@
 # include <stdarg.h>
 # include "libft/libft.h"
 
-int	ft_printf(const char *, ...);
+int	ft_printf(const char *format, ...);
+int	print_str(char *str);
+int	print_base(unsigned long n, char *base);
+int	print_int(int n);
+int	print_ptr(void *ptr);
 
 #endif

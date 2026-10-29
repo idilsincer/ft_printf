@@ -3,35 +3,61 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: idsincer <idsincer@student.42istanbul.c    +#+  +:+       +#+        */
+/*   By: idil <idil@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/20 16:15:14 by idsincer          #+#    #+#             */
-/*   Updated: 2026/09/20 17:32:19 by idsincer         ###   ########.fr       */
+/*   Updated: 2026/10/29 16:42:40 by idil             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
-void print(void *s)
-{
-	char	*str = (char *)s;
-	size_t	i;
 
-	i = 0;
-	while(str[i])
-	{
-		write(1, &str[i], 1);
-		i++;
-	}
+static int	find_type(char type, va_list args)
+{
+	if (type == 'c')
+		return (ft_putchar_fd(va_arg(args, int), 1), 1);
+	else if (type == 's')
+		return (print_str(va_arg(args, char *)));
+	else if (type == 'i' || type == 'd')
+		return (print_int(va_arg(args, int)));
+	else if (type == 'u')
+		return (print_base(va_arg(args, unsigned int), "0123456789"));
+	else if (type == 'x')
+		return (print_base(va_arg(args, unsigned int), "0123456789abcdef"));
+	else if (type == 'X')
+		return (print_base(va_arg(args, unsigned int), "0123456789ABCDEF"));
+	else if (type == 'p')
+		return (print_ptr(va_arg(args, void *)));
+	else if (type == '%')
+		return (ft_putchar_fd('%', 1), 1);
+	return (-1);
 }
 
 int	ft_printf(const char *format, ...)
 {
 	va_list	args;
-	char	*str;
-	size_t	i;
-	
+	int		len;
+	int		check;
+
 	va_start(args, format);
-	i = 0;
-	
+	len = 0;
+	while (*format)
+	{
+		if (*format == '%')
+		{
+			check = find_type(*(++format), args);
+			if (check == -1)
+				return (-1);
+			len += check;
+		}
+		else
+		{
+			if (write(1, format, 1) == -1)
+				return (-1);
+			len++;
+		}
+		format++;
+	}
+	va_end(args);
+	return (len);
 }
-merhaba %s nasılsın %d idil, 42
